@@ -17,6 +17,7 @@ public:
 	Node* goRight() {
 		return right;
 	}
+
 };
 
 // Contains nodes that have operands (Integers) - They are leaves and have no children

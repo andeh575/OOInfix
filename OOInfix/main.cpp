@@ -4,6 +4,8 @@
 */
 
 #include <iostream>
+#include "Node.h"
+#include "ExpTree.h"
 using namespace std;
 
 int main(void) {
