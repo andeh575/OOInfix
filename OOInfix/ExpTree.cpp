@@ -39,11 +39,25 @@ public:
 				treeNodes.push(new IntNode(temp)); // Turn temp into an IntNode and push onto treeNodes stack
 			 // is it an operator?
 			if (isOperator(temp)) {
-			
+				bool control = false;	// Prevent operators from getting lost in the event that operators.top() has higher priority than temp
+
+				while (!control) {
+					if (operators.empty()) {
+
+					}
+					else if (operators.top()->value() == ')') {
+
+					}
+					else if (operators.top()->value() <= priority(temp)) {
+
+					}
+					else
+						
+				}
 			}
 			// Is it an opening parenthesis '('?
 			if (temp == '(') {
-				while (operators.top()->value != ')') {
+				while (operators.top()->value() != ')') {
 
 				}
 
@@ -59,6 +73,16 @@ public:
 		// Assign the top of the treeNodes stack to the root of the tree
 		root = treeNodes.top();
 		return;
+	}
+
+	/*	Build a tree Node* with an operator and two children - Push onto treeNodes stack.
+	/	Valid children are:
+	/		- Two Operands (ie: 1 and 2) - Can be leafs
+	/		- Two Operators (ie: + and *) - Need to have subtrees of their own
+	/		- An Operator and an Operand (ie: 1 and +) - Operand is a leaf and Operators have subtrees of their own
+	*/
+	void insertOp(stack<BinOpNode*>& operators, stack<Node*>& treeNodes) {
+
 	}
 
 	// Helper function for identifying operators

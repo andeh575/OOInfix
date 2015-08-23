@@ -10,6 +10,7 @@ public:
 	Node* getRoot();
 
 	void parseExpression(string m, Node* data);
+	void insertOp(stack<BinOpNode*>& m, stack<Node*>& b);
 	bool isOperator(char val);
 	void preOrder(Node* node);
 	void inOrder(Node* node);
