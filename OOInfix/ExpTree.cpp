@@ -9,6 +9,7 @@ ExpTree::ExpTree(Node* node) {
 	root = node; 
 }
 
+// Destructor
 ExpTree::~ExpTree() {
 	delete root;
 }
@@ -17,12 +18,13 @@ ExpTree::~ExpTree() {
 Node* ExpTree::getRoot() { 
 	return root; 
 }	
-	
+
+// Parse the infix string for insertion into an expression tree
 void ExpTree::parseExpression(string infix, Node* data) {
 	char temp;
-	stack<char> input;			// Stack for the input string
-	stack<BinOpNode*> operators;		// Stack for handling operator nodes
-	stack<Node*> treeNodes;		// Stack for arranging nodes for assembly on the tree
+	stack<char> input;				// Stack for the input string
+	stack<BinOpNode*> operators;	// Stack for handling operator nodes
+	stack<Node*> treeNodes;			// Stack for arranging nodes for assembly on the tree
 
 	// Push the input string (in infix notation) onto the input stack
 	for (int i = 0; i < infix.length(); i++)
@@ -33,40 +35,46 @@ void ExpTree::parseExpression(string infix, Node* data) {
 		temp = input.top();
 		input.pop();
 
-		// Check to see if it's an operand or a closing parenthesis ')'
+		// Check to see if temp is an operand
 		if (isdigit(temp)) 
-			treeNodes.push(new IntNode(temp)); // Turn temp into an IntNode and push onto treeNodes stack
+			treeNodes.push(new IntNode(temp));	
+		// Check to see if temp is a closing parenthesis ')'
 		if (temp == ')')
 			operators.push(new BinOpNode(temp, NULL, NULL));
-		 // is it an operator?
+		 // Check to see if temp is an operator
 		if (isOperator(temp)) {
 			bool control = false;	// Prevent operators from getting lost in the event that operators.top() has higher priority than temp
 
 			while (!control) {
+				// Is the operators stack empty?
 				if (operators.empty()) {
 					operators.push(new BinOpNode(temp, NULL, NULL));
 					control = true;
 				}
+				// Is operators.top() a closing parenthesis ')'?
 				else if (operators.top()->value() == ')') {
 					operators.push(new BinOpNode(temp, NULL, NULL));
 					control = true;
 				}
+				// Is the priority of operators.top() less than or equal to temp?
 				else if (operators.top()->value() <= priority(temp)) {
 					operators.push(new BinOpNode(temp, NULL, NULL));
 					control = true;
 				}
+				// Anything else - ie: the priority of operators.top() is greater than temp
 				else {
-					insertOp(operators, treeNodes);
+					insertOp(operators, treeNodes); // Remember that temp wasn't pushed here!
 				}		
 			}
 		}
-		// Is it an opening parenthesis '('?
+		// Check to see if temp is an opening parenthesis '('?
 		if (temp == '(') {
+			// Pop nodes from the top of the operators stack and assemble them for the tree until we find the matching closing parenthesis ')'
 			while (operators.top()->value() != ')') {
 				insertOp(operators, treeNodes);
 			}
 
-			operators.pop();	// Discard the connecting ')'
+			operators.pop();	// Discard the connecting ')' - also discards the opening '('
 		}
 	}
 
@@ -95,7 +103,7 @@ void ExpTree::insertOp(stack<BinOpNode*>& operators, stack<Node*>& treeNodes) {
 	Node* r = treeNodes.top();
 	treeNodes.pop();
 
-	// Take firs ttwo items off of the treeNodes stack and make them the opNode's children - left precedence
+	// Take first two items off of the treeNodes stack and make them the opNode's children - left precedence
 	BinOpNode* opNode = new BinOpNode(temp->value(), l, r);
 
 	treeNodes.push(opNode);
@@ -153,7 +161,7 @@ int ExpTree::evaluate(Node* node) {
 	int x, y, z;
 	char val = (node->value());
 
-	// Does the node contained an operator?
+	// Does the node contain an operator?
 	if (isOperator(val))
 	{
 		x = evaluate(node->goLeft());

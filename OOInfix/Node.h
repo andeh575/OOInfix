@@ -10,10 +10,10 @@ protected:
 	Node* left;
 	Node* right;
 public:
-	virtual char value();
-	~Node();
-	Node* goLeft();
-	Node* goRight();
+	virtual char value();	// Constructor
+	~Node();				// Destructor
+	Node* goLeft();			// Visit the left child node
+	Node* goRight();		// Visit the right child node
 };
 
 // Contains nodes that have operands (Integers) - They are leaves and have no children

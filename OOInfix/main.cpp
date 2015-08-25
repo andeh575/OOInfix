@@ -15,25 +15,33 @@ int main(void) {
 	string infix;	// Input string
 	int solution;	// Solution to the expression tree
 	bool control;	// Loop flag to allow multiple iterations of input
-	char loop;
-	Node* root = NULL;
-	ExpTree tree = ExpTree(root);	// Declaring an instance of ExpTree
-	
-	
+	char loop;		// User input for control loop
+	ExpTree tree = ExpTree(NULL);	// Declaring an instance of ExpTree
 	
 	cout << "Welcome to the Improved Infix Equation Solver" << endl;
 	control = true;
 
+	// Continue to loop the program until the user presses the 'n' key
 	while (control) {
-		infix = getInfix();
-		tree.parseExpression(infix, root);
-		solution = tree.evaluate(tree.getRoot());
+		infix = getInfix();							
+		tree.parseExpression(infix, NULL);			// Parse the infix expression and assemble it on the tree
+		solution = tree.evaluate(tree.getRoot());	// Evaluate the results of the infix expression
+
+		// Testing for proper arrangement of tree nodes and traversal
+		cout << endl << "Pre Order: ";
+		tree.preOrder(tree.getRoot());
+		
+		cout << endl << "In Order: ";
+		tree.inOrder(tree.getRoot());
+
+		cout << endl << "Post Order: ";
+		tree.postOrder(tree.getRoot());
+
+		cout << endl;
 
 		cout << endl << "The solution to the expression is: " << solution << endl;
-
 		cout << "Do you want to enter another expression (y/n)? ";
 		cin >> loop;
-		tree.~tree();
 
 		if (loop == 'n')
 			control = false;
