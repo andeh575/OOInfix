@@ -1,13 +1,17 @@
+// Node.H
+#ifndef NODE_H
+#define NODE_H
 #pragma once
 
 // Base class for all nodes that can be in an expression tree
 class Node {
 protected:
+	char val;
 	Node* left;
 	Node* right;
 public:
-	virtual char value() = 0;	// No definition of value() in this class
-	virtual ~Node();
+	virtual char value();
+	~Node();
 	Node* goLeft();
 	Node* goRight();
 };
@@ -31,3 +35,5 @@ public:
 	BinOpNode(char data, Node* l, Node* r);	//Constructor
 	char value();		// Value at this node of the tree
 };
+
+#endif
